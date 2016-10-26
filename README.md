@@ -6,5 +6,7 @@
   
 ## Things to do 
   - ESOP <-> SOP <-> POS Canonical Conversion 
-  - McClusky Algorithm [Ref](http://www.cs.columbia.edu/~cs6861/handouts/quine-mccluskey-handout.pdf)
+  - McClusky Algorithm 
+   -[Ref](http://www.cs.columbia.edu/~cs6861/handouts/quine-mccluskey-handout.pdf)
+   -[Row-Column Dominance](https://cseweb.ucsd.edu/classes/wi13/cse140-a/Quine.pdf)
   - Shannon Expansion 
