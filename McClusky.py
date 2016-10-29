@@ -15,6 +15,8 @@ def ifDifferByOne(m1,m2):
     if(len([(x,y) for x,y in zip(m1[1],m2[1]) if x!=y])==1):
         return True
     return False
+#def mergeP(P):
+    #for minterm_set in P:
 # return the minterms haveing number of ones
 def getMinterms(minterms,NumOne):
     mi = []
@@ -39,11 +41,7 @@ formatString = '{0:0'+str(Nbits)+'b}'
 onMinterm = []
 for minterm in m:
     bin = formatString.format(minterm)
-    onMinterm.append([minterm,bin,'Y']) # mark all tags as yes initially
+    onMinterm.append((minterm,bin,'Y')) # mark all tags as yes initially
 print(onMinterm)
 P = divideMinterms(onMinterm)
 print('P : ',len(P),'|',P)
-for m1 in onMinterm:
-    for m2 in onMinterm:
-        print(m1,"|",m2,":",ifDifferByOne(m1,m2))
-# Now Sort the Level 0
