@@ -14,6 +14,10 @@ def checkDominance(a,b):
 def dispP(P):
     for ip in range(0, len(P)):
         print("P(", ip, ")", P[ip])
+def dispT(T):
+    for it in range(0,len(T)):
+        for ip in range(0,len(T[it])):
+            print("T(",it,",",ip,"|",T[it][ip])
 def ifDifferByOne(m1,m2):
     if(len([(x,y) for x,y in zip(m1[1],m2[1]) if x!=y])==1):
         return True
@@ -24,18 +28,30 @@ def getDifferingIndex(m,mn):
             return i
     return None
 def mergeP(table):
+    print("called MergeP with table:")
+    dispP(table)
     P1 = table[0]
+    Pnew = []
+    found = False
     for ip in range(0,len(P1)-1):
         for m in P1[ip]:
             for mn in P1[ip+1]:
                 if(ifDifferByOne(m,mn)):
                     diff = getDifferingIndex(m,mn)
                     if((m[1][diff]!='-')|(mn[1][diff]!='-')):
-                        m_new = list(m)
+                        found = True
+                        m_new =list(m)
                         m_new[1] = m_new[1][0:diff]+'-'+m_new[1][diff+1:]
-                        m_new = tuple(m_new)
+                        m_new[2] = 'Y' # a newly generated term always as 'Y'
+                        m[2]='N'        # check them as 'N' as they are included at least once
+                        mn[2]='N'
+                        Pnew.append(m_new)
                         print(m,"+",mn,"=",m_new)
-
+    Pnew = sort(Pnew)
+    table.append(Pnew)
+    if(found):
+        mergeP(table[1:])
+    return
 # return the minterms haveing number of ones
 def getMinterms(minterms,NumOne):
     mi = []
@@ -43,7 +59,7 @@ def getMinterms(minterms,NumOne):
         if(m[1].count('1')==NumOne):
             mi.append(m)
     return mi
-def divideMinterms(minterms):
+def sort(minterms):
     P=[]
     NumOne = 0;
     while(len(minterms)):
@@ -54,16 +70,18 @@ def divideMinterms(minterms):
         #print("minterms:",len(minterms),"|",minterms)
         NumOne = NumOne+1
     return P
-m = [1,2,3,4,5,8,9,10]
+m = [1,2,3,4,5,8,9,10,11,12,31]
 Nbits = ceil(log(max(m),2))
 formatString = '{0:0'+str(Nbits)+'b}'
 onMinterm = []
 for minterm in m:
     bin = formatString.format(minterm)
-    onMinterm.append((minterm,bin,'Y')) # mark all tags as yes initially
+    onMinterm.append([minterm,bin,'Y']) # mark all tags as yes initially
 print(onMinterm)
-P = divideMinterms(onMinterm)
+P = sort(onMinterm)
 mcTable = [P]
 print('P : ',len(P),'|',P)
 
 mergeP(mcTable)
+print("table")
+dispT(mcTable)
