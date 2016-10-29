@@ -11,12 +11,31 @@ def checkDominance(a,b):
     if c==b_ : return ">"
     if c==a_ : return "<"
     return None
+def dispP(P):
+    for ip in range(0, len(P)):
+        print("P(", ip, ")", P[ip])
 def ifDifferByOne(m1,m2):
     if(len([(x,y) for x,y in zip(m1[1],m2[1]) if x!=y])==1):
         return True
     return False
-#def mergeP(P):
-    #for minterm_set in P:
+def getDifferingIndex(m,mn):
+    for i in range(0,len(m[1])):
+        if(m[1][i]!=mn[1][i]):
+            return i
+    return None
+def mergeP(table):
+    P1 = table[0]
+    for ip in range(0,len(P1)-1):
+        for m in P1[ip]:
+            for mn in P1[ip+1]:
+                if(ifDifferByOne(m,mn)):
+                    diff = getDifferingIndex(m,mn)
+                    if((m[1][diff]!='-')|(mn[1][diff]!='-')):
+                        m_new = list(m)
+                        m_new[1] = m_new[1][0:diff]+'-'+m_new[1][diff+1:]
+                        m_new = tuple(m_new)
+                        print(m,"+",mn,"=",m_new)
+
 # return the minterms haveing number of ones
 def getMinterms(minterms,NumOne):
     mi = []
@@ -44,4 +63,7 @@ for minterm in m:
     onMinterm.append((minterm,bin,'Y')) # mark all tags as yes initially
 print(onMinterm)
 P = divideMinterms(onMinterm)
+mcTable = [P]
 print('P : ',len(P),'|',P)
+
+mergeP(mcTable)
