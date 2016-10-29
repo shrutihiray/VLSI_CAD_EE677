@@ -61,7 +61,7 @@ def getEssentialPrimes(table):
             for minterm in minterms:
                 if(minterm[2]=='Y'):
                     essential.append(minterm)
-    return list(set(essential))
+    return sortSet(essential)
 # return the minterms haveing number of ones
 def getMinterms(minterms,NumOne):
     mi = []
@@ -69,6 +69,15 @@ def getMinterms(minterms,NumOne):
         if(m[1].count('1')==NumOne):
             mi.append(m)
     return mi
+def uniq(lst):
+    last = object()
+    for item in lst:
+        if item == last:
+            continue
+        yield item
+        last = item
+def sortSet(l):
+    return list(uniq(sorted(l, reverse=True)))
 def sort(minterms):
     P=[]
     NumOne = 0;
