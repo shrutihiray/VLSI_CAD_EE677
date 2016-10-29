@@ -41,11 +41,8 @@ def mergeP(table,id):
                     if((m[1][diff]!='-')|(mn[1][diff]!='-')):
                         found = True
                         m_new =list(m)
-                        m_new[0] = []
-                        if m[0] not in m_new[0]:
-                            m_new[0].append(m[0])
-                        if mn[0] not in m_new[0]:
-                            m_new[0].append(mn[0])
+                        m_new[0] = list(m[0])+list(mn[0])
+                        m_new[0] = list(set(m_new[0]))
                         m_new[1] = m_new[1][0:diff]+'-'+m_new[1][diff+1:]
                         m_new[2] = 'Y' # a newly generated term always as 'Y'
                         m[2]='N'        # check them as 'N' as they are included at least once
@@ -64,7 +61,7 @@ def getEssentialPrimes(table):
             for minterm in minterms:
                 if(minterm[2]=='Y'):
                     essential.append(minterm)
-    return essential
+    return list(set(essential))
 # return the minterms haveing number of ones
 def getMinterms(minterms,NumOne):
     mi = []
@@ -91,7 +88,7 @@ formatString = '{0:0'+str(Nbits)+'b}'
 onMinterm = []
 for minterm in m:
     bin = formatString.format(minterm)
-    onMinterm.append([minterm,bin,'Y']) # mark all tags as yes initially
+    onMinterm.append([[minterm],bin,'Y']) # mark all tags as yes initially
 print(onMinterm)
 P = sort(onMinterm)
 mcTable = [P]
