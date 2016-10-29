@@ -29,7 +29,7 @@ def getDifferingIndex(m,mn):
     return None
 def mergeP(table):
     print("called MergeP with table:")
-    dispP(table)
+    dispT(table)
     P1 = table[0]
     Pnew = []
     found = False
@@ -46,12 +46,20 @@ def mergeP(table):
                         m[2]='N'        # check them as 'N' as they are included at least once
                         mn[2]='N'
                         Pnew.append(m_new)
-                        print(m,"+",mn,"=",m_new)
+                        #print(m,"+",mn,"=",m_new)
     Pnew = sort(Pnew)
     table.append(Pnew)
     if(found):
         mergeP(table[1:])
     return
+def getEssentialPrimes(table):
+    essential = []
+    for col in table:
+        for minterms in col:
+            for minterm in minterms:
+                if(minterm[2]=='Y'):
+                    essential.append(minterm)
+    return essential
 # return the minterms haveing number of ones
 def getMinterms(minterms,NumOne):
     mi = []
@@ -70,7 +78,7 @@ def sort(minterms):
         #print("minterms:",len(minterms),"|",minterms)
         NumOne = NumOne+1
     return P
-m = [1,2,3,4,5,8,9,10,11,12,31]
+m = [1,2,3,4,5,8,9,10,11,12]
 Nbits = ceil(log(max(m),2))
 formatString = '{0:0'+str(Nbits)+'b}'
 onMinterm = []
@@ -83,5 +91,7 @@ mcTable = [P]
 print('P : ',len(P),'|',P)
 
 mergeP(mcTable)
-print("table")
+print("Final Table")
 dispT(mcTable)
+eprimes  = getEssentialPrimes(mcTable)
+print("Essential Primes",eprimes)
