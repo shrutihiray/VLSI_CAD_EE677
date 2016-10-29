@@ -41,6 +41,7 @@ def mergeP(table):
                     if((m[1][diff]!='-')|(mn[1][diff]!='-')):
                         found = True
                         m_new =list(m)
+                        m_new[0] = (m[0],mn[0])
                         m_new[1] = m_new[1][0:diff]+'-'+m_new[1][diff+1:]
                         m_new[2] = 'Y' # a newly generated term always as 'Y'
                         m[2]='N'        # check them as 'N' as they are included at least once
@@ -78,8 +79,10 @@ def sort(minterms):
         #print("minterms:",len(minterms),"|",minterms)
         NumOne = NumOne+1
     return P
-m = [1,2,3,4,5,8,9,10,11,12]
-Nbits = ceil(log(max(m),2))
+
+m = [0,,8]
+Nbits = ceil(log(max(m)+1,2))
+print("Nbits : ",Nbits)
 formatString = '{0:0'+str(Nbits)+'b}'
 onMinterm = []
 for minterm in m:
