@@ -17,7 +17,7 @@ def dispP(P):
 def dispT(T):
     for it in range(0,len(T)):
         for ip in range(0,len(T[it])):
-            print("T(",it,",",ip,"|",T[it][ip])
+            print("T(",it,",",ip,")|",T[it][ip])
 def ifDifferByOne(m1,m2):
     if(len([(x,y) for x,y in zip(m1[1],m2[1]) if x!=y])==1):
         return True
@@ -27,10 +27,10 @@ def getDifferingIndex(m,mn):
         if(m[1][i]!=mn[1][i]):
             return i
     return None
-def mergeP(table):
+def mergeP(table,id):
     print("called MergeP with table:")
     dispT(table)
-    P1 = table[0]
+    P1 = table[id]
     Pnew = []
     found = False
     for ip in range(0,len(P1)-1):
@@ -41,7 +41,11 @@ def mergeP(table):
                     if((m[1][diff]!='-')|(mn[1][diff]!='-')):
                         found = True
                         m_new =list(m)
-                        m_new[0] = (m[0],mn[0])
+                        m_new[0] = []
+                        if m[0] not in m_new[0]:
+                            m_new[0].append(m[0])
+                        if mn[0] not in m_new[0]:
+                            m_new[0].append(mn[0])
                         m_new[1] = m_new[1][0:diff]+'-'+m_new[1][diff+1:]
                         m_new[2] = 'Y' # a newly generated term always as 'Y'
                         m[2]='N'        # check them as 'N' as they are included at least once
@@ -51,7 +55,7 @@ def mergeP(table):
     Pnew = sort(Pnew)
     table.append(Pnew)
     if(found):
-        mergeP(table[1:])
+        mergeP(table,id+1)
     return
 def getEssentialPrimes(table):
     essential = []
@@ -80,7 +84,7 @@ def sort(minterms):
         NumOne = NumOne+1
     return P
 
-m = [0,,8]
+m = [0,1,4,5,7]
 Nbits = ceil(log(max(m)+1,2))
 print("Nbits : ",Nbits)
 formatString = '{0:0'+str(Nbits)+'b}'
@@ -93,7 +97,7 @@ P = sort(onMinterm)
 mcTable = [P]
 print('P : ',len(P),'|',P)
 
-mergeP(mcTable)
+mergeP(mcTable,0)
 print("Final Table")
 dispT(mcTable)
 eprimes  = getEssentialPrimes(mcTable)
