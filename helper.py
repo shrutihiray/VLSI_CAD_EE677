@@ -1,10 +1,7 @@
-from math import *
-import numpy as np
-# Ajinkya Gorad (140110033)
-# function to check dominance of two binary representations
-# as far as the code can only check dominance and generate  binary representations of each minterm
-# a minterm syntax is (m,binary_rep,flag)
-
+from pyeda.inter import *
+zero = expr(0)
+one = expr(1)
+#-------------DEFINATIONS------------
 def checkDominance(a,b):
     if(a==b): return "="
     a_ = [int(x) for x in list(a)]
@@ -94,29 +91,18 @@ def sort(minterms):
         NumOne = NumOne+1
     return P
 
-m = [10,16,44,22,12,14,56,35,36,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,65,69,6,5,6,59,89,5,52,512]
-m = list(set(m))
-Nbits = ceil(log(max(m)+1,2))
-print("Nbits : ",Nbits)
-formatString = '{0:0'+str(Nbits)+'b}'
-onMinterm = []
-for minterm in m:
-    bin = formatString.format(minterm)
-    onMinterm.append([[minterm],bin,'Y']) # mark all tags as yes initially
-print(onMinterm)
-P = sort(onMinterm) # arrange according to number of ones
-mcTable = [P]
-print('P : ',len(P),'|',P)
 
-mergeP(mcTable,0)
-#print("Final Table")
-#dispT(mcTable)
-primes  = getPrimes(mcTable)
-print("Primes(",len(primes),")",primes)
-dispP(primes)
-#now find the minimum set of Ps from them such that all numbers are covered
-S = []
-for mi in m:
-    S.append([minterm[1] for minterm in primes if mi in minterm[0]])
-print('S-----------')
-dispP(S)
+def shannon(f,X,i,n,m,M):
+    if(i == n):
+        return
+    f1_bar = f.restrict({X[i]:zero})
+    f1 = f.restrict({X[i]:one})
+    if((f1_bar == one)&(i==n-1)):
+        M.append(m+'1')
+    else:
+        shannon(f1_bar|expr(~X[i]),X,i+1,n,m+'1',M)
+    if((f1 == one)&(i==n-1)):
+        M.append(m+'0')
+    else:
+        shannon(f1|expr(X[i]),X,i+1,n,m+'0',M)
+    return
