@@ -2,6 +2,18 @@ from pyeda.inter import *
 zero = expr(0)
 one = expr(1)
 #-------------DEFINATIONS------------
+def mintermsOfPrime(m):
+    S = []
+    for mi in m:
+        S.append([minterm[1] for minterm in primes if mi in minterm[0]])
+    return S
+def mintermType(m,Nbits):
+    formatString = '{0:0' + str(Nbits) + 'b}'
+    onMinterm = []
+    for minterm in m:
+        bin = formatString.format(minterm)
+        onMinterm.append([[minterm], bin, 'Y'])  # mark all tags as yes initially
+    return onMinterm
 def checkDominance(a,b):
     if(a==b): return "="
     a_ = [int(x) for x in list(a)]
@@ -27,7 +39,7 @@ def getDifferingIndex(m,mn):
             return i
     return None
 def mergeP(table,id):
-    print("called MergeP with table:",id)
+    #print("called MergeP with table:",id)
     #dispT(table)
     P1 = table[id]
     Pnew = []

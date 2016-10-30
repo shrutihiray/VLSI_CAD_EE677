@@ -6,38 +6,31 @@ n = 3
 X = exprvars('x', n)
 m = ''
 g = expr('(x[0]&(x[1]|x[2]))')
-g = ~g
+g_bar = ~g
  # what comes are maxterms
 M=[]
-shannon(g,X,0,n,m,M)
-print("MINTERM: ",M)
-Maxterms = [int(x,2) for x in M]
-print(Maxterms)
+shannon(g_bar,X,0,n,m,M)
+minterms = [int(x,2) for x in M]
+print("___________SHANNON__________")
+print("G : ",g)
+print("Minterms : ",minterms)
 
-m = Maxterms
+m = minterms
 #--------------McClusky---------------
 m = list(set(m))
 Nbits = ceil(log(max(m)+1,2))
+print("_____________McClusky__________")
+print("Minterm Input : ",m)
 print("Nbits : ",Nbits)
-formatString = '{0:0'+str(Nbits)+'b}'
-onMinterm = []
-for minterm in m:
-    bin = formatString.format(minterm)
-    onMinterm.append([[minterm],bin,'Y']) # mark all tags as yes initially
-print(onMinterm)
+onMinterm  = mintermType(m,Nbits)
 P = sort(onMinterm) # arrange according to number of ones
 mcTable = [P]
-print('P : ',len(P),'|',P)
-
+print('P Table Input : ',len(P))
+dispP(P)
 mergeP(mcTable,0)
 #print("Final Table")
 #dispT(mcTable)
 primes  = getPrimes(mcTable)
-print("Primes(",len(primes),")",primes)
+print("Prime : #",len(primes))
 dispP(primes)
-#now find the minimum set of Ps from them such that all numbers are covered
-S = []
-for mi in m:
-    S.append([minterm[1] for minterm in primes if mi in minterm[0]])
-print('S-----------')
-dispP(S)
+
