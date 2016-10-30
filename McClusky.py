@@ -1,8 +1,10 @@
 from math import *
+import numpy as np
 # Ajinkya Gorad (140110033)
 # function to check dominance of two binary representations
 # as far as the code can only check dominance and generate  binary representations of each minterm
 # a minterm syntax is (m,binary_rep,flag)
+
 def checkDominance(a,b):
     if(a==b): return "="
     a_ = [int(x) for x in list(a)]
@@ -28,8 +30,8 @@ def getDifferingIndex(m,mn):
             return i
     return None
 def mergeP(table,id):
-    print("called MergeP with table:")
-    dispT(table)
+    print("called MergeP with table:",id)
+    #dispT(table)
     P1 = table[id]
     Pnew = []
     found = False
@@ -47,21 +49,23 @@ def mergeP(table,id):
                         m_new[2] = 'Y' # a newly generated term always as 'Y'
                         m[2]='N'        # check them as 'N' as they are included at least once
                         mn[2]='N'
-                        Pnew.append(m_new)
+                        if m_new not in Pnew:   # add only if it doesn't exist
+                            Pnew.append(m_new)
                         #print(m,"+",mn,"=",m_new)
     Pnew = sort(Pnew)
     table.append(Pnew)
     if(found):
         mergeP(table,id+1)
     return
-def getEssentialPrimes(table):
-    essential = []
+def getPrimes(table):
+    primes = []
     for col in table:
         for minterms in col:
             for minterm in minterms:
                 if(minterm[2]=='Y'):
-                    essential.append(minterm)
-    return sortSet(essential)
+                    minterm[0].sort()
+                    primes.append(minterm)
+    return sortSet(primes)
 # return the minterms haveing number of ones
 def getMinterms(minterms,NumOne):
     mi = []
@@ -90,7 +94,8 @@ def sort(minterms):
         NumOne = NumOne+1
     return P
 
-m = [0,1,4,5,7]
+m = [10,16,44,22,12,14,56,35,36,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,65,69,6,5,6,59,89,5,52,512]
+m = list(set(m))
 Nbits = ceil(log(max(m)+1,2))
 print("Nbits : ",Nbits)
 formatString = '{0:0'+str(Nbits)+'b}'
@@ -99,12 +104,14 @@ for minterm in m:
     bin = formatString.format(minterm)
     onMinterm.append([[minterm],bin,'Y']) # mark all tags as yes initially
 print(onMinterm)
-P = sort(onMinterm)
+P = sort(onMinterm) # arrange according to number of ones
 mcTable = [P]
 print('P : ',len(P),'|',P)
 
 mergeP(mcTable,0)
-print("Final Table")
-dispT(mcTable)
-eprimes  = getEssentialPrimes(mcTable)
-print("Essential Primes",eprimes)
+#print("Final Table")
+#dispT(mcTable)
+primes  = getPrimes(mcTable)
+print("Primes(",len(primes),")")
+dispP(primes)
+#now find the minimum set of Ps from them such that all numbers are covered
