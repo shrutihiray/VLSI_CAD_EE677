@@ -2,7 +2,7 @@ from pyeda.inter import *
 zero = expr(0)
 one = expr(1)
 #-------------DEFINATIONS------------
-def mintermsOfPrime(m):
+def mintermsOfPrime(m,primes):
     S = []
     for mi in m:
         S.append([minterm[1] for minterm in primes if mi in minterm[0]])
