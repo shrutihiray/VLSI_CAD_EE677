@@ -2,11 +2,22 @@ from pyeda.inter import *
 zero = expr(0)
 one = expr(1)
 #-------------DEFINATIONS------------
-def mintermsOfPrime(m,primes):
+def primesOfminterm(m,primes):
     S = []
     for mi in m:
         S.append([minterm[1] for minterm in primes if mi in minterm[0]])
     return S
+def mintermsOfprime(S):
+    m = [ s[0] for s in S ]
+    primes = []
+    for s in S:
+        for p in s[1]:
+            if(p not in primes):
+                primes.append(p)
+    P =[]
+    for p in primes:
+        P.append( [p,[s[0] for s in S if p in s[1]],'R'] )
+    dispP(P)
 def mintermType(m,Nbits):
     formatString = '{0:0' + str(Nbits) + 'b}'
     onMinterm = []
@@ -61,7 +72,7 @@ def mergeP(table,id):
                         if m_new not in Pnew:   # add only if it doesn't exist
                             Pnew.append(m_new)
                         #print(m,"+",mn,"=",m_new)
-    Pnew = sort(Pnew)
+    Pnew = sortNumOne(Pnew)
     table.append(Pnew)
     if(found):
         mergeP(table,id+1)
@@ -91,7 +102,7 @@ def uniq(lst):
         last = item
 def sortSet(l):
     return list(uniq(sorted(l, reverse=True)))
-def sort(minterms):
+def sortNumOne(minterms):
     P=[]
     NumOne = 0;
     while(len(minterms)):
