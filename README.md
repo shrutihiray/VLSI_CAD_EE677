@@ -9,4 +9,5 @@
   - McClusky Algorithm 
    -[Ref](http://www.cs.columbia.edu/~cs6861/handouts/quine-mccluskey-handout.pdf)
    -[Row-Column Dominance](https://cseweb.ucsd.edu/classes/wi13/cse140-a/Quine.pdf)
+   -[Check this for the Online Solver](http://quinemccluskey.com/?min=3%0D%0A4%0D%0A5%0D%0A6%0D%0A7%0D%0A&dont=)
   - Shannon Expansion 
