@@ -2,6 +2,89 @@ from pyeda.inter import *
 zero = expr(0)
 one = expr(1)
 #-------------DEFINATIONS------------
+def displayPrimeImplicantTable(m,P):
+    if(len(P)==0):
+        print("EMPTY TABLE")
+        return
+    line ="____"
+    fStr = '{0:03d}'
+    for k in range(0,len(P)):
+        line =line+ "\t|"+P[k][1]+"|"
+    print(line)
+    line = "<<<<"
+    for k in range(0,len(P)):
+        line = line+"\t"+str(P[k][0])
+    line = line+">>>>>"
+    print(line)
+    for y in range(0,len(m)):
+        line = "[" + fStr.format(m[y]) + "]"
+        for x in range(0,len(P)):
+            line = line+"\t\t"
+            if(m[y] in P[x][0]):
+                line = line+"X"
+            else:
+                line = line+"-"
+        print(line)
+def getS(m,P):
+    return list(zip(m, primesOfminterm(m, P)))
+def getP(S):
+    return mintermsOfprime(S)
+def getm(S):
+    return [s[0] for s in S]
+def removeDominatingRow(m,P):
+    S = getS(m,P)
+    print("Sr")
+    dispP(S)
+    for s in S:
+        for s2 in S:
+            if(s!=s2):
+                if(set(s[1])>set(s2[1])):
+                    if(s in S):
+                        S.remove(s)
+    P = getP(S)
+    m = getm(S)
+    return m,P
+def removeDominatedCol(m,P):
+    dispP(P)
+    for p in P:
+        for p2 in P:
+            if (p != p2):
+                if (set(p[0]) >= set(p2[0])):
+                    P.remove(p)
+    return m,P
+
+
+def tableReduce(m,P):
+    S = getS(m, P) # S gets modified in loop
+    essentialPrimes = []
+    iter = 0
+    print("Prime Implicant Table")
+    displayPrimeImplicantTable(m,P)
+    while(len(P)!=0):
+        iter = iter+1
+        print("[ITERATION TABLE REDUCE : ",iter,"]")
+        #print(S)
+        for s in S:
+            if(len(s[1])==1):
+                essentialPrimes.append(s)
+                if(s[0] in m):
+                    m.remove(s[0])
+        sTrash=[s for s in S for ep in essentialPrimes if ep[1][0] in s[1] ] # remove the minterm common primes
+        # remove minterms corresponding to particular
+        S = [s for s in S if s not in sTrash]
+        P = getP(S)
+        m = getm(S)
+        print("Removed essential Prime Implicants")
+        displayPrimeImplicantTable(m,P)
+        m,P=removeDominatingRow(m,P)
+        print("Removed Dominating Rows in Prime Implicant Table")
+        displayPrimeImplicantTable(m,P)
+        m,P=removeDominatedCol(m,P)
+        print("Removed Dominated Columns")
+        displayPrimeImplicantTable(m,P)
+        S = getS(m,P)
+    ep = [e[1][0] for e in essentialPrimes]
+    return ep
 def primesOfminterm(m,primes):
     S = []
     for mi in m:
@@ -16,9 +99,10 @@ def mintermsOfprime(S):
                 primes.append(p)
     P =[]
     for p in primes:
-        P.append( [p,[s[0] for s in S if p in s[1]],'R'] )
-    dispP(P)
-def mintermType(m,Nbits):
+        P.append( [[s[0] for s in S if p in s[1]],p,'R'] )
+    return P
+# renamed from mintermType  to mineterm2BinString
+def minterm2BinString(m,Nbits):
     formatString = '{0:0' + str(Nbits) + 'b}'
     onMinterm = []
     for minterm in m:
@@ -40,6 +124,10 @@ def dispT(T):
     for it in range(0,len(T)):
         for ip in range(0,len(T[it])):
             print("T(",it,",",ip,")|",T[it][ip])
+def dispX(X,L,title):
+    print("-----",title,"-----")
+    for ip in range(0, len(X)):
+        print(L,"(", ip, ")", X[ip])
 def ifDifferByOne(m1,m2):
     if(len([(x,y) for x,y in zip(m1[1],m2[1]) if x!=y])==1):
         return True
@@ -49,8 +137,8 @@ def getDifferingIndex(m,mn):
         if(m[1][i]!=mn[1][i]):
             return i
     return None
-def mergeP(table,id):
-    #print("called MergeP with table:",id)
+def mergeTable(table,id):
+    #print("called MergeTable with table:",id)
     #dispT(table)
     P1 = table[id]
     Pnew = []
@@ -75,7 +163,7 @@ def mergeP(table,id):
     Pnew = sortNumOne(Pnew)
     table.append(Pnew)
     if(found):
-        mergeP(table,id+1)
+        mergeTable(table,id+1) # use recursion
     return
 def getPrimes(table):
     primes = []
