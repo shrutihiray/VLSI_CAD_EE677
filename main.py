@@ -45,9 +45,9 @@ def prime2Str(p):
         primeStr=''
         for i in range(0,n):
             if(prime[i]=='1'):
-                primeStr = 'x'+str(i)+'+'+primeStr
+                primeStr = 'x'+str(i)+'.'+primeStr
             if(prime[i]=='0'):
-                primeStr = '~x'+str(i)+'+'+primeStr
+                primeStr = '~x'+str(i)+'.'+primeStr
         primeStr = primeStr[:-1]
         SOP.append(primeStr)
     return SOP
