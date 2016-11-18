@@ -1,9 +1,9 @@
 from pyeda.inter import *
 from helper import *
 from math import *
-def McClusky(m,Nbits):
+def McCluskey(m,Nbits):
 
-    print("__________________Mc CLUSKY_____________________")
+    print("__________________Mc CLUSKEY_____________________")
     print("MINTERM INPUT  (BITS :",Nbits,"): ",m)
     mintermBinary = minterm2BinString(m,Nbits) # convert minterms into their binary strings
     P = sortNumOne(mintermBinary)              # create the table P with minterm ( STORE PRIME TO MINTERM MAPPING)
@@ -21,7 +21,7 @@ def McClusky(m,Nbits):
     print("Essential Prime Implicants :",essentialPrimes)
     return essentialPrimes
 def getEssentialImplicants(f,X):
-    f_bar = f # complement the function to get the minterms
+    f_bar = ~f # complement the function to get the minterms
     n = len(X)  # number of variables
     # SHANNON METHOD FOR FINDING MINTERMS
     m=''
@@ -35,28 +35,15 @@ def getEssentialImplicants(f,X):
     # MCCLUSKY ALGORITHM FOR REDUCING ON MINTERMS AND FINDING PRIME IMPLICANTS  TO ESSENTIAL PRIME  IMPLICANTS
     m = list(set(m))     # make sure all minterms are unique
     Nbits = ceil(log(max(m)+1,2)) # Get number of Bits to work with
-    essentialPrimes = McClusky(m,Nbits) # call McCluksy Function for  getting essential prime implicants
+    essentialPrimes = McCluskey(m,Nbits) # call McCluksy Function for  getting essential prime implicants
     return essentialPrimes
-# To Convert the essential primes to string equivalent
-def prime2Str(p):
-    SOP = []
-    for prime in p:
-        n = len(prime)
-        primeStr=''
-        for i in range(0,n):
-            if(prime[i]=='1'):
-                primeStr = 'x'+str(i)+'.'+primeStr
-            if(prime[i]=='0'):
-                primeStr = '~x'+str(i)+'.'+primeStr
-        primeStr = primeStr[:-1]
-        SOP.append(primeStr)
-    return SOP
+
 
 #-----------SHANNON--------------
 n =4
 X = exprvars('x', n)
 
-f = expr('(x[1]^x[0])^(x[2]&x[3])')
+f = expr('~((x[1]^x[0])^(x[2]&x[3]))')
 ep = getEssentialImplicants(f,X)
-print("+=========+")
-print(prime2Str(ep))
+
+print('SOP:',prime2Str(ep))

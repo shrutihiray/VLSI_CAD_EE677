@@ -217,3 +217,17 @@ def shannon(f,X,i,n,m,M):
     else:
         shannon(f1|expr(X[i]),X,i+1,n,m+'0',M)
     return
+# To Convert the essential primes to string equivalent
+def prime2Str(p):
+    SOP = []
+    for prime in p:
+        n = len(prime)
+        primeStr=''
+        for i in range(0,n):
+            if(prime[i]=='1'):
+                primeStr = 'x'+str(i)+'.'+primeStr
+            if(prime[i]=='0'):
+                primeStr = '~x'+str(i)+'.'+primeStr
+        primeStr = primeStr[:-1]
+        SOP.append(primeStr)
+    return SOP
