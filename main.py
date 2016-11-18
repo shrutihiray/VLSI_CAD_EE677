@@ -37,11 +37,26 @@ def getEssentialImplicants(f,X):
     Nbits = ceil(log(max(m)+1,2)) # Get number of Bits to work with
     essentialPrimes = McClusky(m,Nbits) # call McCluksy Function for  getting essential prime implicants
     return essentialPrimes
-
+# To Convert the essential primes to string equivalent
+def prime2Str(p):
+    SOP = []
+    for prime in p:
+        n = len(prime)
+        primeStr=''
+        for i in range(0,n):
+            if(prime[i]=='1'):
+                primeStr = 'x'+str(i)+'+'+primeStr
+            if(prime[i]=='0'):
+                primeStr = '~x'+str(i)+'+'+primeStr
+        primeStr = primeStr[:-1]
+        SOP.append(primeStr)
+    return SOP
 
 #-----------SHANNON--------------
 n =4
 X = exprvars('x', n)
 
 f = expr('(x[1]^x[0])^(x[2]&x[3])')
-getEssentialImplicants(f,X)
+ep = getEssentialImplicants(f,X)
+print("+=========+")
+print(prime2Str(ep))
