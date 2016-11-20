@@ -32,8 +32,6 @@ print ("f9 is")
 print (f9)
 if(f9==f8):
 	print("In here")
-else:
-	print("NOt here")
 f_list.append(f6)
 print ("f6 is")
 print (f6)
