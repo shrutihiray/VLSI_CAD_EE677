@@ -47,4 +47,3 @@ print (f_list)
 #[Or(x[0], 0), Or(x[2], Or(~x[0], x[1])), Or(~x[2], Or(~x[0], x[1])), Or(x[2], Or(~x[0], ~x[1]))]
 # Each term represents of the list represents the max term (prime implicant)
 print (h)
-#h is the POS representation of g
