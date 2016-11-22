@@ -63,7 +63,7 @@ def tableReduce(m,P):
     while(len(P)!=0):
         iter = iter+1
         print("[ITERATION TABLE REDUCE : ",iter,"]")
-        #print(S)
+        print(S)
         for s in S:
             if(len(s[1])==1):
                 essentialPrimes.append(s)
@@ -138,8 +138,8 @@ def getDifferingIndex(m,mn):
             return i
     return None
 def mergeTable(table,id):
-    #print("called MergeTable with table:",id)
-    #dispT(table)
+    print("called MergeTable with table:",id)
+    dispT(table)
     P1 = table[id]
     Pnew = []
     found = False
@@ -202,32 +202,33 @@ def sortNumOne(minterms):
         NumOne = NumOne+1
     return P
 
-
 def shannon(f,X,i,n,m,M):
     if(i == n):
         return
-    f1_bar = f.restrict({X[i]:zero})
-    f1 = f.restrict({X[i]:one})
-    if((f1_bar == one)&(i==n-1)):
-        M.append(m+'1')
-    else:
-        shannon(f1_bar|expr(~X[i]),X,i+1,n,m+'1',M)
-    if((f1 == one)&(i==n-1)):
-        M.append(m+'0')
-    else:
-        shannon(f1|expr(X[i]),X,i+1,n,m+'0',M)
+    f1_bar = f.restrict({X[i]: zero})
+    f1 = f.restrict({X[i]: one})
+
+    if(i == n-1):
+        if(f1 == one):
+            M.append('1'+m)
+        if(f1_bar == one):
+            M.append('0'+m)
+
+    print("SH: <",i,'> f1 : ',f1,'f1_bar : ',f1_bar)
+    shannon(f1_bar,X,i+1,n,'0'+m,M)
+    shannon(f1,X,i+1,n,'1'+m,M)
     return
 # To Convert the essential primes to string equivalent
 def prime2Str(p):
-    SOP = []
+    out = []
     for prime in p:
         n = len(prime)
         primeStr=''
         for i in range(0,n):
             if(prime[i]=='1'):
-                primeStr = 'x'+str(i)+'.'+primeStr
+                primeStr = 'x'+str(i)+'+'+primeStr
             if(prime[i]=='0'):
-                primeStr = '~x'+str(i)+'.'+primeStr
+                primeStr = '~x'+str(i)+'+'+primeStr
         primeStr = primeStr[:-1]
-        SOP.append(primeStr)
-    return SOP
+        out.append(primeStr)
+    return out

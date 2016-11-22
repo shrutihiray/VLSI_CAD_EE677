@@ -21,12 +21,13 @@ def McCluskey(m,Nbits):
     print("Essential Prime Implicants :",essentialPrimes)
     return essentialPrimes
 def getEssentialImplicants(f,X):
-    f_bar = ~f # complement the function to get the minterms
+    #f_bar = f # complement the function to get the minterms
     n = len(X)  # number of variables
     # SHANNON METHOD FOR FINDING MINTERMS
     m=''
     M =[]
-    shannon(f_bar,X,0,n,m,M)
+    shannon(f,X,0,n,m,M)
+    print("M",M)
     minterms = [ int(x,2) for x in M]
     print("______________SHANNON EXPANSION_______________")
     print("Expression :",f)
@@ -36,14 +37,15 @@ def getEssentialImplicants(f,X):
     m = list(set(m))     # make sure all minterms are unique
     Nbits = ceil(log(max(m)+1,2)) # Get number of Bits to work with
     essentialPrimes = McCluskey(m,Nbits) # call McCluksy Function for  getting essential prime implicants
+    essentialPrimes = set(essentialPrimes) # remove  duplicates
     return essentialPrimes
 
 
 #-----------SHANNON--------------
-n =4
+n =5
 X = exprvars('x', n)
 
-f = expr('~((x[1]^x[0])^(x[2]&x[3]))')
+f = expr('x[0]&x[1]&x[4]')
 ep = getEssentialImplicants(f,X)
 
-print('SOP:',prime2Str(ep))
+print('POS:',prime2Str(ep))
