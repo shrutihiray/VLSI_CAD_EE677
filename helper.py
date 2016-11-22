@@ -214,7 +214,7 @@ def shannon(f,X,i,n,m,M):
         if(f1_bar == one):
             M.append('0'+m)
 
-    print("SH: <",i,'> f1 : ',f1,'f1_bar : ',f1_bar)
+    #print("SH: <",i,'> f1 : ',f1,'f1_bar : ',f1_bar)
     shannon(f1_bar,X,i+1,n,'0'+m,M)
     shannon(f1,X,i+1,n,'1'+m,M)
     return
@@ -226,9 +226,9 @@ def prime2Str(p):
         primeStr=''
         for i in range(0,n):
             if(prime[i]=='1'):
-                primeStr = 'x'+str(i)+'+'+primeStr
+                primeStr = 'x'+str(n-1-i)+'+'+primeStr
             if(prime[i]=='0'):
-                primeStr = '~x'+str(i)+'+'+primeStr
+                primeStr = '~x'+str(n-1-i)+'+'+primeStr
         primeStr = primeStr[:-1]
         out.append(primeStr)
     return out

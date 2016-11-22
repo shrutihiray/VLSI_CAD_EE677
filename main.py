@@ -18,7 +18,7 @@ def McCluskey(m,Nbits):
     print("________PRIME IMPLICANT TABLE_________")
     displayPrimeImplicantTable(m, primes)
     essentialPrimes = tableReduce(m, primes)
-    print("Essential Prime Implicants :",essentialPrimes)
+
     return essentialPrimes
 def getEssentialImplicants(f,X):
     #f_bar = f # complement the function to get the minterms
@@ -38,6 +38,7 @@ def getEssentialImplicants(f,X):
     Nbits = ceil(log(max(m)+1,2)) # Get number of Bits to work with
     essentialPrimes = McCluskey(m,Nbits) # call McCluksy Function for  getting essential prime implicants
     essentialPrimes = set(essentialPrimes) # remove  duplicates
+    print("Essential Prime Implicants :", essentialPrimes)
     return essentialPrimes
 
 
