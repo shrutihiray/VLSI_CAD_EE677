@@ -226,9 +226,9 @@ def prime2Str(p):
         primeStr=''
         for i in range(0,n):
             if(prime[i]=='1'):
-                primeStr = 'x'+str(n-1-i)+'+'+primeStr
+                primeStr = 'x'+str(n-1-i)+'.'+primeStr
             if(prime[i]=='0'):
-                primeStr = '~x'+str(n-1-i)+'+'+primeStr
+                primeStr = '~x'+str(n-1-i)+'.'+primeStr
         primeStr = primeStr[:-1]
         out.append(primeStr)
     return out

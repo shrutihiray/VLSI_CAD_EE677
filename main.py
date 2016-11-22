@@ -43,12 +43,15 @@ def getEssentialImplicants(f,X):
 
 
 #-----------SHANNON--------------
-n =5
+#  Enter  the espression here
+fStr = 'x[0]&x[1]|x[0]&~x[1]'
+f = expr(fStr)
+for c in fStr:
+    if(c is int)
+n =3
 X = exprvars('x', n)
-
-f = expr('x[0]&x[1]&x[4]')
 ep = getEssentialImplicants(f,X)
-POS = ''
+SOP = ''
 for s in prime2Str(ep):
-    POS = '('+s+').'+POS
-print('POS:',POS)
+    SOP = '('+s+')+'+SOP
+print('SOP:',SOP)
