@@ -47,5 +47,7 @@ X = exprvars('x', n)
 
 f = expr('x[0]&x[1]&x[4]')
 ep = getEssentialImplicants(f,X)
-
-print('POS:',prime2Str(ep))
+POS = ''
+for s in prime2Str(ep):
+    POS = '('+s+').'+POS
+print('POS:',POS)
