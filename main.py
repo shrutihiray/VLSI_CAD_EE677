@@ -46,8 +46,7 @@ def getEssentialImplicants(f,X):
 #  Enter  the espression here
 fStr = 'x[0]&x[1]|x[0]&~x[1]'
 f = expr(fStr)
-for c in fStr:
-    if(c is int)
+
 n =3
 X = exprvars('x', n)
 ep = getEssentialImplicants(f,X)
